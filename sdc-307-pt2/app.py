@@ -26,7 +26,7 @@ def register():
         pw = request.form['password']
 
         if User.query.filter_by(username=user).first():
-            return "User already exists!"
+            return "User exists"
 
         hashed_pw = generate_password_hash(pw, method='pbkdf2:sha256')
         new_user = User(username=user, password=hashed_pw)
@@ -40,8 +40,8 @@ def login():
     if request.method == 'POST':
         user = User.query.filter_by(username=request.form['username']).first()
         if user and check_password_hash(user.password, request.form['password']):
-            return f"Welcome back, {user.username}! Your session is saved."
-        return "Invalid Credentials"
+            return f"Hey {user.username}"
+        return "Sorry, no user found"
     return render_template('login.html')
 
 if __name__ == '__main__':
